@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Coordinator Panel</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h2>Coordinator Panel</h2>
+
+<h3>Rectification Requests</h3>
+<div id="rectifications"></div>
+
+<h3>Leave Requests</h3>
+<div id="leaves"></div>
+
+<h3>Queries</h3>
+<div id="queries"></div>
+
+<script>
+function loadData() {
+
+  fetch("/get-rectifications")
+    .then(res => res.json())
+    .then(data => {
+      let html = "";
+      data.forEach((r, i) => {
+        html += `
+        ${r.roll} - ${r.reason} - ${r.status}
+        <button onclick="updateRect(${i}, 'Approved')">Approve</button>
+        <button onclick="updateRect(${i}, 'Rejected')">Reject</button>
+        <br><br>`;
+      });
+      document.getElementById("rectifications").innerHTML = html;
+    });
+
+  fetch("/get-leaves")
+    .then(res => res.json())
+    .then(data => {
+      let html = "";
+      data.forEach((l, i) => {
+        html += `
+        ${l.roll} - ${l.reason} - ${l.status}
+        <button onclick="updateLeave(${i}, 'Approved')">Approve</button>
+        <button onclick="updateLeave(${i}, 'Rejected')">Reject</button>
+        <br><br>`;
+      });
+      document.getElementById("leaves").innerHTML = html;
+    });
+
+  fetch("/get-queries")
+    .then(res => res.json())
+    .then(data => {
+      let html = "";
+      data.forEach((q, i) => {
+        html += `
+        ${q.roll} - ${q.type} - ${q.subject || "Class"} - ${q.message} - ${q.status}
+        <button onclick="updateQuery(${i}, 'Resolved')">Resolve</button>
+        <br><br>`;
+      });
+      document.getElementById("queries").innerHTML = html;
+    });
+}
+
+function updateRect(index, status) {
+  fetch("/update-rectification", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({ index, status })
+  }).then(loadData);
+}
+
+function updateLeave(index, status) {
+  fetch("/update-leave", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({ index, status })
+  }).then(loadData);
+}
+
+function updateQuery(index, status) {
+  fetch("/update-query", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({ index, status })
+  }).then(loadData);
+}
+
+loadData();
+</script>
+
+</body>
+</html>

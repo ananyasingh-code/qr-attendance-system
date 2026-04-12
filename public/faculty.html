@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Faculty Panel</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h2>Faculty Panel</h2>
+
+<h3>Your Queries</h3>
+<div id="queries"></div>
+
+<script>
+const faculty = JSON.parse(localStorage.getItem("faculty"));
+
+function loadQueries() {
+  fetch("/get-queries")
+    .then(res => res.json())
+    .then(data => {
+
+      let html = "";
+
+      data.forEach((q, i) => {
+
+        // 🔥 FILTER (IMPORTANT)
+        if (q.faculty === faculty.name) {
+
+          html += `
+          ${q.roll} - ${q.subject || "Class"} - ${q.message} - ${q.status}
+          <button onclick="resolve(${i})">Resolve</button>
+          <br><br>`;
+        }
+      });
+
+      document.getElementById("queries").innerHTML = html;
+    });
+}
+
+function resolve(index) {
+  fetch("/update-query", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({ index, status: "Resolved" })
+  }).then(loadQueries);
+}
+
+loadQueries();
+</script>
+
+</body>
+</html>

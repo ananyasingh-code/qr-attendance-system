@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Student Page</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h2>Student Page</h2>
+
+<div id="info"></div>
+
+<h3 id="attendanceCount"></h3>
+
+<h3>Your QR Code:</h3>
+<img id="qrImage" width="200">
+
+<h3>Your Requests Status</h3>
+
+<div id="rectStatus"></div>
+<div id="leaveStatus"></div>
+<div id="queryStatus"></div>
+
+<h3 id="attendancePercent"></h3>
+
+<button onclick="changePass()">Change Password</button>
+
+<button onclick="rectify()">Attendance Rectification</button>
+
+<button onclick="applyLeave()">Apply Leave</button>
+
+<button onclick="openQuery()">Query</button>
+
+<script>
+const student = JSON.parse(localStorage.getItem("student"));
+
+document.getElementById("info").innerHTML = `
+<strong>Name:</strong> ${student.name} <br>
+<strong>Roll:</strong> ${student.roll} <br>
+<strong>Coordinator:</strong> ${student.coordinator} <br><br>
+
+<strong>Subjects:</strong><br>
+<strong>Electrical Engineering:</strong> Dr. Sandeep Ojha<br>
+<strong>Graphics:</strong> Prof. Umesh Shukla<br>
+<strong>Physics:</strong> Dr. Lalit Shukla<br>
+<strong>Maths:</strong> Prof. V.N. Pathak<br>
+<strong>Critical Thinking:</strong> Mr. Sanjay Kumar<br>
+<strong>IKS:</strong> Dr. Dilip Jaiswal
+`;
+
+fetch(`/generate-qr/${student.roll}`)
+  .then(res => res.json())
+  .then(data => {
+    document.getElementById("qrImage").src = data.qr;
+  });
+
+function changePass() {
+  window.location = "change-password.html";
+}
+
+function rectify() {
+  const reason = prompt("Enter reason for missing attendance:");
+
+  if (!reason) {
+    alert("Reason is required!");
+    return;
+  }
+
+  fetch("/apply-rectification", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({
+      roll: student.roll,
+      reason: reason
+    })
+  });
+
+  alert("Rectification request sent!");
+}
+
+function applyLeave() {
+  const reason = prompt("Enter reason for leave:");
+
+  if (!reason) {
+    alert("Reason is required!");
+    return;
+  }
+
+  fetch("/apply-leave", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({
+      roll: student.roll,
+      reason: reason
+    })
+  });
+
+  alert("Leave request sent!");
+}
+
+function openQuery() {
+  const type = prompt("Enter type: class or subject");
+
+  if (!type) {
+    alert("Type is required!");
+    return;
+  }
+
+  if (type.toLowerCase() === "class") {
+    const message = prompt("Enter your class-related query:");
+
+    fetch("/submit-query", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({
+        roll: student.roll,
+        type: "class",
+        subject: "",
+        faculty: "Dr. Sandeep Ojha",
+        message: message
+      })
+    });
+
+    alert("Query sent to Class Coordinator");
+
+  } else if (type.toLowerCase() === "subject") {
+
+    const subject = prompt(
+      "Choose subject:\nElectrical Engineering\nGraphics\nPhysics\nMaths\nCritical Thinking\nIKS"
+    );
+
+    let faculty = "";
+
+    if (subject === "Electrical Engineering") faculty = "Dr. Sandeep Ojha";
+    else if (subject === "Graphics") faculty = "Prof. Umesh Shukla";
+    else if (subject === "Physics") faculty = "Dr. Lalit Shukla";
+    else if (subject === "Maths") faculty = "Prof. V.N. Pathak";
+    else if (subject === "Critical Thinking") faculty = "Mr. Sanjay Kumar";
+    else if (subject === "IKS") faculty = "Dr. Dilip Jaiswal";
+
+    const message = prompt("Enter your subject query:");
+
+    fetch("/submit-query", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({
+        roll: student.roll,
+        type: "subject",
+        subject: subject,
+        faculty: faculty,
+        message: message
+      })
+    });
+
+    alert("Query sent to " + faculty);
+
+  } else {
+    alert("Invalid type!");
+  }
+}
+
+fetch("http://localhost:3000/get-attendance/" + student.roll)
+  .then(res => res.json())
+  .then(data => {
+    document.getElementById("attendanceCount").innerText =
+      "Total Attendance: " + data.count;
+  });
+
+  // Rectification
+fetch("/student-rectifications/" + student.roll)
+  .then(res => res.json())
+  .then(data => {
+    let html = "<h4>Rectifications:</h4>";
+    data.forEach(r => {
+      html += `${r.reason} - ${r.status}<br>`;
+    });
+    document.getElementById("rectStatus").innerHTML = html;
+  });
+
+// Leaves
+fetch("/student-leaves/" + student.roll)
+  .then(res => res.json())
+  .then(data => {
+    let html = "<h4>Leaves:</h4>";
+    data.forEach(l => {
+      html += `${l.reason} - ${l.status}<br>`;
+    });
+    document.getElementById("leaveStatus").innerHTML = html;
+  });
+
+// Queries
+fetch("/student-queries/" + student.roll)
+  .then(res => res.json())
+  .then(data => {
+    let html = "<h4>Queries:</h4>";
+    data.forEach(q => {
+      html += `${q.message} - ${q.status}<br>`;
+    });
+    document.getElementById("queryStatus").innerHTML = html;
+  });
+
+  fetch("/attendance-percentage/" + student.roll)
+  .then(res => res.json())
+  .then(data => {
+    document.getElementById("attendancePercent").innerText =
+      "Attendance Percentage: " + data.percent + "%";
+  });
+
+</script>
+
+</body>
+</html>
