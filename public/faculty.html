@@ -15,7 +15,9 @@
 const faculty = JSON.parse(localStorage.getItem("faculty"));
 
 function loadQueries() {
-  fetch("/get-queries")
+  const facultyName = prompt("Enter your name exactly");
+
+fetch("/faculty-queries/" + facultyName)
     .then(res => res.json())
     .then(data => {
 
@@ -23,14 +25,11 @@ function loadQueries() {
 
       data.forEach((q, i) => {
 
-        // 🔥 FILTER (IMPORTANT)
-        if (q.faculty === faculty.name) {
-
           html += `
           ${q.roll} - ${q.subject || "Class"} - ${q.message} - ${q.status}
           <button onclick="resolve(${i})">Resolve</button>
           <br><br>`;
-        }
+      
       });
 
       document.getElementById("queries").innerHTML = html;

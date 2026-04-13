@@ -232,6 +232,16 @@ app.get("/attendance-percentage/:roll", (req, res) => {
   res.json({ percent });
 });
 
-app.listen(3000, () => {
+app.get("/faculty-queries/:faculty", (req, res) => {
+  const faculty = req.params.faculty;
+
+  const filtered = queries.filter(q => q.faculty === faculty);
+
+  res.json(filtered);
+});
+
+const PORT = process.env.PORT||3000;
+
+app.listen(PORT, () => {
   console.log("Server running on http://localhost:3000");
 });
