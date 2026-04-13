@@ -81,13 +81,10 @@ The QR Attendance Management System is a web-based application designed to simpl
    * Coordinator reviews and approves/rejects
 5. Leave and queries follow similar approval workflow
 
-## 🌐 Live Website
-
-[Visit Website](https://qr-attendance-system-production-3181.up.railway.app)
+## 🌐 https://qr-attendance-system-jxxo.onrender.com/
 
 ## 📌 Future Enhancements
 
-* Faculty panel for subject-wise query handling
 * Database integration (MongoDB)
 * Improved UI/UX
 * Role-based authentication system
