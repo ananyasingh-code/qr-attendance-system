@@ -1,12 +1,12 @@
 # QR Attendance Management System
 
-## 📌 Project Overview
+## Project Overview
 
 The QR Attendance Management System is a web-based application designed to simplify and digitize student attendance management. It allows students to mark attendance using QR codes and provides additional features such as attendance rectification, leave application, and query submission.
 
-## 🚀 Features
+## Features
 
-### 👨‍🎓 Student Panel
+### Student Panel
 
 * Secure login using Roll Number and Password (last 3 digits of roll number by default)
 * QR Code generation for attendance
@@ -16,7 +16,7 @@ The QR Attendance Management System is a web-based application designed to simpl
 * Submit queries (Class-related or Subject-related)
 * View status of all requests (Pending / Approved / Rejected)
 
-### 🧑‍🏫 Coordinator Panel
+### Coordinator Panel
 
 * View all attendance rectification requests
 * Approve or reject rectification requests
@@ -24,7 +24,7 @@ The QR Attendance Management System is a web-based application designed to simpl
 * View student queries
 * Mark queries as resolved
 
-## 🏫 Academic Structure
+## Academic Structure
 
 * Class Coordinator: Dr. Sandeep Ojha
 
@@ -37,13 +37,13 @@ The QR Attendance Management System is a web-based application designed to simpl
 * Critical Thinking and Design Thinking – Mr. Sanjay Kumar
 * IKS – Dr. Dilip Jaiswal
 
-## 🔐 Authentication System
+## Authentication System
 
 * Students login using Roll Number
 * Default password = last 3 digits of Roll Number
 * Password can be changed after login
 
-## ⚙️ Tech Stack
+## Tech Stack
 
 ### Frontend
 
@@ -65,12 +65,12 @@ The QR Attendance Management System is a web-based application designed to simpl
 
 * Railway (for hosting backend and frontend)
 
-## 📊 Data Handling
+## Data Handling
 
 * Data is stored temporarily using arrays
 * Persistence is managed using a JSON file (data.json)
 
-## 🔄 Functional Workflow
+## Functional Workflow
 
 1. Student logs in using credentials
 2. QR code is generated daily for attendance
@@ -81,14 +81,14 @@ The QR Attendance Management System is a web-based application designed to simpl
    * Coordinator reviews and approves/rejects
 5. Leave and queries follow similar approval workflow
 
-## 🌐 https://qr-attendance-system-jxxo.onrender.com/
+## Live site  https://qr-attendance-system-jxxo.onrender.com/
 
-## 📌 Future Enhancements
+## Future Enhancements
 
 * Database integration (MongoDB)
 * Improved UI/UX
 * Role-based authentication system
 
-## 👨‍💻 Developer
+## Developer
 
 Developed as a full-stack web project for academic and learning purposes.
