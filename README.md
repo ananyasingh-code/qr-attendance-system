@@ -81,7 +81,8 @@ The QR Attendance Management System is a web-based application designed to simpl
    * Coordinator reviews and approves/rejects
 5. Leave and queries follow similar approval workflow
 
-## Live site *https://qr-attendance-system-jxxo.onrender.com/
+## Live site 
+https://qr-attendance-system-jxxo.onrender.com/
 
 ## Future Enhancements
 
