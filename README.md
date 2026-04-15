@@ -84,6 +84,9 @@ The QR Attendance Management System is a web-based application designed to simpl
 ## Live site 
 https://qr-attendance-system-jxxo.onrender.com/
 
+## Scanner site
+https://qr-attendance-system-jxxo.onrender.com/scanner.html
+
 ## Future Enhancements
 
 * Database integration (MongoDB)
